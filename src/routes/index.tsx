@@ -5,9 +5,10 @@ import Home from '../screens/Home';
 import Login from '../screens/Login';
 import CreateTask from '../screens/CreateTask';
 import Subscribe from '../screens/Subscribe';
-import DetailTask from '../screens/DetailsTask';
+import DetailTask from '../screens/DetailTask';
 import FirstAcess from '../screens/FirstAcess';
 import { AppProvider } from '../context';
+import MyBalance from '../screens/MyBalance';
 
 const Stack = createStackNavigator();
 
@@ -22,6 +23,7 @@ export default function Routes() {
                     <Stack.Screen name="Subscribe" component={Subscribe} />
                     <Stack.Screen name="DetailTask" component={DetailTask} />
                     <Stack.Screen name="FirstAcess" component={FirstAcess} />
+                    <Stack.Screen name="MyBalance" component={MyBalance} />
                 </Stack.Navigator>
             </AppProvider>
         </NavigationContainer>

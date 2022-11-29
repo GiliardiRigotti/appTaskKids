@@ -1,15 +1,24 @@
 import { useNavigation } from "@react-navigation/native";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
+import Button from "../../components/Button";
+import CardTask from "../../components/CardTask";
 import Header from "../../components/Header";
 import { AppContext } from "../../context";
+import { Container } from "./styled";
 
-export default function Home() {
+export default function Home({ navigation }) {
     const { user, tasks } = useContext(AppContext)
-    const navigation = useNavigation()
-    function handleAddTask() {
-        navigation.navigate("Login")
+    const [listTask, setListTask] = useState([])
+    function handleBalance() {
+        navigation.navigate("MyBalance")
     }
+    useEffect(() => {
+        const focusHandler = navigation.addListener('focus', () => {
+            setListTask(tasks)
+        });
+        return focusHandler;
+    }, [navigation])
     if (user == null) {
         <View>
             <Text>Carregando...</Text>
@@ -17,29 +26,32 @@ export default function Home() {
     }
     return (
         <>
-            <Header title={`Ola ${user.children}, essas são as suas tarefas`} />
-            {tasks ? (
-                <View style={{ flex: 1, backgroundColor: "#FFEFD5", alignItems: "center" }}>
-                    {tasks.map((item, index) => (
-                        <View key={index} style={{ width: "95%", height: "10%", flexDirection: "row", justifyContent: "center", backgroundColor: "white", alignItems: "center", borderRadius: 5 }}>
-                            <Text style={{ fontSize: 20 }}>
-                                {item.title}
-                            </Text>
+            <Header title={`Ola ${user.children}, essas são as suas tarefas`} home />
+            <Container>
+                {listTask ? (
+                    <>
+                        {listTask.map((item, index) => {
+                            if (!item.done) {
+                                return (
+                                    <CardTask key={index} title={item.title} id={index} />
+                                )
+                            }
+                        }
 
-                        </View>
-                    ))}
 
-                </View>
-            ) : (
-                <View style={{ width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}>
+
+                        )}
+                    </>
+
+                ) : (
+
                     <Text>
                         Não tem mais tarefas
                     </Text>
-                </View>
-            )}
-            <TouchableOpacity onPress={handleAddTask} style={{ position: "absolute", bottom: 10, right: 10, width: 60, height: 60, borderRadius: 30, backgroundColor: "pink", alignItems: "center", justifyContent: "center" }}>
-                <Text style={{ fontSize: 45, fontWeight: "bold", color: "white" }}>+</Text>
-            </TouchableOpacity>
+
+                )}
+                <Button title="Meu Saldo" onPress={handleBalance} />
+            </Container>
         </>
     )
 }
